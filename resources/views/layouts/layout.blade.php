@@ -66,13 +66,10 @@
                     </tbody>
                 </table>
             </div>
-                        <div class="modal-footer">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                 
-                <!-- Кнопка оформления: добавлен класс btn-cart, чтобы JS мог её скрывать/показывать -->
-                <a href="{{ route('cart.show') }}" class="btn btn-success btn-cart @if(empty(session('cart'))) d-none @endif">
-                    Оформить заказ
-                </a>
+                <a href="{{ route('cart.checkout') }}" class="btn btn-primary btn-cart @if(empty(session('cart'))) d-none @endif">Оформить заказ</a>
                 
                 <!-- Кнопка очистки: убран inline onclick, так как мы используем делегирование в main.js -->
                 <button type="button" class="btn btn-danger btn-clear-cart btn-cart @if(empty(session('cart'))) d-none @endif" data-action="{{ route('cart.clear') }}">

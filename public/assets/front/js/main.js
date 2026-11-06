@@ -30,6 +30,25 @@ function getCart(action) {
     });
 }
 
+// Добавлено из первого изображения: глобальная функция очистки корзины с редиректом
+function clearCart(action) {
+    $.ajax({
+        url: action,
+        type: 'get',
+        success: function (result) {
+            let now_location = document.location.pathname;
+            if (now_location == '/cart/checkout') {
+                location = '/cart/checkout';
+            } else {
+                showCart(result);
+            }
+        },
+        error: function () {
+            alert('Error');
+        }
+    });
+}
+
 $(function () {
     // 1. ЗАЩИТА ПОЛЯ КОЛИЧЕСТВА (запрет отрицательных чисел и ведущего нуля)
     $('input[name="qty"]').on('input', function() {
@@ -68,40 +87,34 @@ $(function () {
         });
     });
 
-    // 3. УДАЛЕНИЕ ТОВАРА ИЗ КОРЗИНЫ
-    $('#cart-modal .modal-body').on('click', '.del-item', function () {
+    // 3. УДАЛЕНИЕ ТОВАРА ИЗ КОРЗИНЫ (Обновлено из второго изображения)
+    $('#cart-modal .modal-body, .cart-table').on('click', '.del-item', function () {
         $.ajax({
             url: $(this).data('action'),
             type: 'get',
             success: function (result) {
-                showCart(result);
+                let now_location = document.location.pathname;
+                if (now_location == '/cart/checkout') {
+                    location = '/cart/checkout';
+                } else {
+                    showCart(result);
+                }
             },
-            error: function () {
-                alert('Ошибка при удалении товара!');
+            error: function (msg) {
+                alert('Error!');
             }
         });
     });
 
-    // 4. ОЧИСТКА КОРЗИНЫ (РЕШЕНИЕ ПРОБЛЕМЫ ReferenceError)
-    // Вместо onclick в HTML мы используем делегирование событий. 
-    // Это гарантирует, что функция всегда найдется, даже если модальное окно перезагружается через AJAX.
+    // 4. ОЧИСТКА КОРЗИНЫ ЧЕРЕЗ ДЕЛЕГИРОВАНИЕ СОБЫТИЙ (перенаправляет на clearCart)
     $(document).on('click', '.btn-clear-cart', function () {
         if (confirm('Вы уверены, что хотите очистить корзину?')) {
-            $.ajax({
-                url: $(this).data('action'),
-                type: 'get',
-                success: function (result) {
-                    showCart(result);
-                },
-                error: function () {
-                    alert('Ошибка при очистке корзины');
-                }
-            });
+            let actionUrl = $(this).data('action');
+            clearCart(actionUrl);
         }
     });
 
-        // 5. ОТКРЫТИЕ КОРЗИНЫ (Главная кнопка в шапке сайта)
-    // Этот код перехватывает клик по ссылке с классом 'open-cart-link'
+    // 5. ОТКРЫТИЕ КОРЗИНЫ (Главная кнопка в шапке сайта)
     $(document).on('click', '.open-cart-link', function (e) {
         e.preventDefault(); // Отменяем стандартный переход по ссылке
         

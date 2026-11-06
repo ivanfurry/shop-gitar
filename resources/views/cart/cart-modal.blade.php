@@ -28,7 +28,7 @@
                         <td>
                             <!-- УЛУЧШЕННАЯ КНОПКА УДАЛЕНИЯ ТОВАРА -->
                             <button type="button" class="btn btn-sm btn-outline-danger del-item" 
-                                    data-action="{{ route('cart.del_item', ['product_id' => $item['id']]) }}" 
+                                    data-action="{{ route('cart.del_item', ['product_id' => $item['product_id']]) }}" 
                                     title="Удалить из корзины">
                                 <i class="fas fa-trash-alt"></i> Удалить
                             </button>
