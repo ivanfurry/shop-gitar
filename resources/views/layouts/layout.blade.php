@@ -17,6 +17,12 @@
 
 @include('layouts.navbar')
 
+@if (session()->has('success'))
+    <div class="alert alert-success">
+        {{session('success')}}
+    </div>
+@endif
+
 <div class="wrapper mt-5">
     <div class="container">
         <div class="row">
