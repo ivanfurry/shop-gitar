@@ -25,6 +25,22 @@ use App\Http\Controllers\ProductController;
 // Route::post('/login', [UserController::class, 'login'])->name('login');
 // Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
+
+// Маршруты админки
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'admin']], function () {
+    Route::get('/', [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('index');
+    
+    // Товары
+    Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
+    
+    // Категории
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+    
+    // Статусы
+    Route::resource('statuses', \App\Http\Controllers\Admin\StatusController::class);
+});
+
+
 // Главная страница
 Route::get('/', [ProductController::class, 'index'])->name('home');
 
@@ -43,7 +59,6 @@ Route::match(['get', 'post'], '/cart/checkout', [CartController::class, 'checkou
 Route::middleware('guest')->group(function () {
     Route::get('/register', [UserController::class, 'create'])->name('register.create');
     Route::post('/register', [UserController::class, 'store'])->name('register.store');
-
     Route::get('/login', [UserController::class, 'loginForm'])->name('login.create');
     Route::post('/login', [UserController::class, 'login'])->name('login');
 });

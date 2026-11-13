@@ -38,4 +38,9 @@ class Product extends Model
             return asset("storage/images/{$this->img}");
         }
     }
+
+    protected $fillable = [
+        'title', 'slug', 'content', 'category_id', 'status_id',
+        'img', 'price', 'old_price', 'hit', 'sale', 'qty',
+    ];
 }
